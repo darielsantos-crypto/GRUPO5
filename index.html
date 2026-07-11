@@ -149,6 +149,10 @@
     .btn-ghost {background:rgba(255,255,255,.88); border:1px solid rgba(11,47,110,.12); color:var(--navy)}
 
     .flip-scene {perspective:1800px; width:min(620px,100%); justify-self:center;}
+    .swipe-hint, .swipe-caption {display:none}
+    @keyframes swipeHintLeft {0%,100% {transform:translateY(-50%) translateX(0)} 50% {transform:translateY(-50%) translateX(-6px)}}
+    @keyframes swipeHintRight {0%,100% {transform:translateY(-50%) translateX(0)} 50% {transform:translateY(-50%) translateX(6px)}}
+
     .flip-card {position:relative; width:100%; min-height:620px; border:0; background:transparent; padding:0; cursor:pointer; transform-style:preserve-3d; transition:transform .9s cubic-bezier(.2,.76,.2,1); -webkit-transform-style:preserve-3d}
     .flip-card.is-flipped {transform:rotateY(180deg)}
     .card-face {position:absolute; inset:0; border-radius:34px; backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden; background:linear-gradient(180deg,#fff 0%, rgba(255,255,255,.95) 100%); border:1px solid rgba(var(--accent-rgb),.24); box-shadow:0 24px 56px rgba(7,28,68,.15); transform-style:preserve-3d; -webkit-transform-style:preserve-3d}
@@ -229,6 +233,14 @@
       .interactive-stage {padding:14px; border-radius:28px; scroll-margin-top:170px}
       .interactive-stage.has-level .stage-content {grid-template-columns:1fr; gap:16px; min-height:auto}
       .flip-scene {order:1; width:100%}
+      .flip-scene {position:relative}
+      .swipe-hint {display:grid; place-items:center; position:absolute; top:50%; width:42px; height:42px; border-radius:999px; background:rgba(255,255,255,.98); border:1px solid rgba(11,47,110,.12); box-shadow:0 12px 24px rgba(7,28,68,.12); color:var(--navy); z-index:6; pointer-events:none; opacity:.96}
+      .swipe-hint svg {width:20px; height:20px}
+      .swipe-hint-left {left:8px; animation:swipeHintLeft 1.7s ease-in-out infinite}
+      .swipe-hint-right {right:8px; animation:swipeHintRight 1.7s ease-in-out infinite}
+      .swipe-caption {display:block; text-align:center; font-size:.82rem; font-weight:800; color:#6b7d98; margin-top:10px; letter-spacing:.02em}
+      .flip-scene.hint-dismissed .swipe-hint, .flip-scene.hint-dismissed .swipe-caption {opacity:0; visibility:hidden; transition:opacity .25s ease, visibility .25s ease}
+
       .stage-copy {order:2; gap:16px}
       .reaction-stack {order:3}
       .stage-copy h3 {font-size:clamp(2rem,10vw,2.85rem); line-height:1.02; max-width:none; overflow-wrap:normal; word-break:normal; hyphens:none}
@@ -407,7 +419,9 @@
               </div>
             </div>
 
-            <div class="flip-scene">
+            <div class="flip-scene" id="flipScene">
+              <span class="swipe-hint swipe-hint-left" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></span>
+              <span class="swipe-hint swipe-hint-right" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
               <button class="flip-card" id="flipCard" type="button" aria-label="Virar card e revelar o PDI">
                 <div class="card-face card-front">
                   <div class="card-top">
@@ -432,6 +446,7 @@
                   <div class="pdi-body"><ol class="pdi-list" id="pdiList"></ol></div>
                 </div>
               </button>
+              <div class="swipe-caption" aria-hidden="true">Deslize para os lados para trocar o nível</div>
             </div>
 
             <aside class="reaction-stack">
@@ -453,6 +468,14 @@
       const toast = $('#toast');
       const stage = $('#interactiveStage');
       const flipCard = $('#flipCard');
+      const flipScene = $('#flipScene');
+      let swipeHintDismissed = false;
+
+      function dismissSwipeHint() {
+        if (swipeHintDismissed || !flipScene) return;
+        swipeHintDismissed = true;
+        flipScene.classList.add('hint-dismissed');
+      }
       const levelTabs = $$('.level-tab');
       let currentLevel = 0;
       let toastTimer;
@@ -596,6 +619,7 @@
       let suppressNextClick = false;
 
       flipCard.addEventListener('touchstart', (event) => {
+        dismissSwipeHint();
         const touch = event.changedTouches[0];
         touchStartX = touch.clientX;
         touchStartY = touch.clientY;
@@ -636,6 +660,7 @@
       }, {passive:true});
 
       flipCard.addEventListener('click', (event) => {
+        dismissSwipeHint();
         if (suppressNextClick || touchMoved) {
           event.preventDefault();
           touchMoved = false;
