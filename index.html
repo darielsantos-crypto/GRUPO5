@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b2f6e">
+  <title>Grupo 5 | Autogestão e Proatividade</title>
+  <meta name="description" content="Apresentação interativa da soft skill atitudinal Autogestão e Proatividade.">
+  <style>
+    :root {
+      --navy:#0b2f6e;
+      --navy-2:#123f8b;
+      --ink:#13294b;
+      --muted:#60708a;
+      --bg:#eef4fb;
+      --card:#ffffff;
+      --line:rgba(11,47,110,.12);
+      --shadow:0 24px 60px rgba(7,28,68,.12);
+      --radius:30px;
+      --header:84px;
+      --accent:#ef5350;
+      --accent-rgb:239,83,80;
+    }
+    * {box-sizing:border-box}
+    html {scroll-behavior:smooth; scroll-snap-type:y mandatory;}
+    body {margin:0; font-family:Inter,Segoe UI,Arial,sans-serif; color:var(--ink); background:
+      radial-gradient(circle at 10% 10%, rgba(76,155,213,.14), transparent 22rem),
+      radial-gradient(circle at 90% 24%, rgba(47,176,113,.08), transparent 20rem),
+      linear-gradient(180deg,#f7fbff 0%, #edf4fb 100%);
+      overflow-x:hidden;}
+    body.presentation-mode {background:#edf3fa;}
+    img {display:block; max-width:100%;}
+    .noise {position:fixed; inset:0; z-index:-2; pointer-events:none; opacity:.18;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");}
+    .scroll-progress {position:fixed; top:0; left:0; width:100%; height:4px; z-index:200; background:rgba(11,47,110,.08)}
+    .scroll-progress span {display:block; height:100%; width:0; background:linear-gradient(90deg,#0b2f6e,#2fb071,#c7a13a); box-shadow:0 0 12px rgba(47,176,113,.35)}
+    .preloader {position:fixed; inset:0; z-index:500; display:grid; place-items:center; color:#fff; background:radial-gradient(circle at 50% 0%, #194d9f 0%, #0a2a5e 48%, #071b40 100%); transition:.55s ease}
+    .preloader.is-hidden {opacity:0; visibility:hidden}
+    .preloader-mark {display:grid; gap:18px; justify-items:center; text-align:center}
+    .preloader-logo {font-size:clamp(3rem,8vw,6rem); font-weight:950; letter-spacing:-.08em}
+    .preloader-ring {width:76px;height:76px;border-radius:50%; border:4px solid rgba(255,255,255,.18); border-top-color:#fff; animation:spin 1s linear infinite}
+    .preloader small {font-size:.92rem; letter-spacing:.25em; text-transform:uppercase; font-weight:800; color:#d9e8ff}
+    @keyframes spin {to {transform:rotate(360deg)}}
+
+    .site-header {position:sticky; top:0; z-index:100; height:var(--header); display:flex; align-items:center; background:rgba(248,251,255,.86); backdrop-filter:blur(16px); border-bottom:1px solid var(--line)}
+    .header-inner {width:min(1320px, calc(100% - 40px)); margin:auto; display:flex; align-items:center; justify-content:space-between; gap:18px}
+    .brand {display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink)}
+    .brand-mark {width:56px; height:56px; display:grid; place-items:center; border-radius:18px; color:#fff; background:linear-gradient(145deg,#1a57b0,#0b2f6e); font-size:1.55rem; font-weight:950; box-shadow:0 16px 30px rgba(11,47,110,.2)}
+    .brand-copy strong {display:block; font-size:1.45rem; letter-spacing:.02em; color:var(--navy)}
+    .brand-copy span {display:block; color:#697c9a; font-size:.94rem; font-weight:700}
+    .main-nav {display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+    .main-nav a {padding:10px 14px; border-radius:999px; text-decoration:none; color:#4b5f81; font-weight:800; font-size:.92rem; transition:.25s}
+    .main-nav a:hover,.main-nav a.is-active {background:#fff; color:var(--navy); box-shadow:0 12px 24px rgba(7,28,68,.08)}
+    .header-actions {display:flex; gap:10px}
+    .icon-btn {width:48px; height:48px; border-radius:16px; border:1px solid var(--line); background:#fff; display:grid; place-items:center; cursor:pointer; box-shadow:0 8px 20px rgba(7,28,68,.06); color:var(--navy)}
+    .icon-btn svg {width:20px; height:20px}
+
+    .chronology {position:fixed; left:18px; top:50%; transform:translateY(-50%); z-index:90; display:flex; flex-direction:column; gap:12px; background:rgba(255,255,255,.82); border:1px solid var(--line); box-shadow:var(--shadow); padding:12px; border-radius:26px}
+    .chronology a {width:40px; height:40px; display:grid; place-items:center; border-radius:14px; text-decoration:none; color:#687b98; font-weight:900; background:transparent; transition:.25s}
+    .chronology a.is-active,.chronology a:hover {background:var(--navy); color:#fff}
+
+    main {position:relative}
+    .page {min-height:calc(100svh - var(--header)); scroll-snap-align:start; scroll-snap-stop:always; display:flex; align-items:center; padding:40px 0 44px; position:relative}
+    .container {width:min(1320px, calc(100% - 64px)); margin:auto}
+    .kicker {display:inline-flex; align-items:center; gap:10px; padding:10px 16px; border-radius:999px; background:#e9f1ff; border:1px solid #cfe0ff; color:#1c58b4; font-size:.82rem; font-weight:900; letter-spacing:.1em; text-transform:uppercase}
+    .kicker::before {content:""; width:10px; height:10px; border-radius:50%; background:currentColor; box-shadow:0 0 0 6px rgba(28,88,180,.12)}
+    .step-badge {position:absolute; left:0; top:8px; display:flex; align-items:center; gap:14px}
+    .step-num {width:56px; height:56px; border-radius:20px; display:grid; place-items:center; background:linear-gradient(145deg,#11489d,#0b2f6e); color:#fff; font-weight:950; font-size:1.65rem; box-shadow:0 18px 34px rgba(11,47,110,.22)}
+    .step-pill {display:inline-flex; align-items:center; gap:8px; padding:11px 16px; border-radius:999px; background:#eaf2ff; border:1px solid #cfe0ff; color:#1c58b4; font-size:.82rem; font-weight:900; letter-spacing:.12em; text-transform:uppercase}
+    .step-pill::before {content:""; width:10px;height:10px;border-radius:50%; background:currentColor; box-shadow:0 0 0 6px rgba(28,88,180,.12)}
+
+    .hero-grid {display:grid; grid-template-columns:1.02fr .98fr; gap:40px; align-items:center}
+    .hero-copy h1 {margin:24px 0 14px; font-size:clamp(4rem,8vw,7.8rem); line-height:.88; letter-spacing:-.08em; color:var(--navy)}
+    .hero-copy h1 em {display:block; font-style:normal; color:transparent; -webkit-text-stroke:2px rgba(11,47,110,.78)}
+    .hero-sub {font-size:clamp(1.12rem,1.8vw,1.38rem); color:#e02323; font-weight:900; margin:0 0 6px}
+    .team-inline {max-width:760px; margin:0 0 18px; color:#42557a; font-size:1.05rem; line-height:1.8; font-weight:750}
+    .team-inline strong {color:#163d80}
+    .team-inline span {display:block}
+    .hero-meta {display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:22px 0 26px; max-width:760px}
+    .meta-card {padding:16px 18px; border-radius:22px; background:rgba(255,255,255,.75); border:1px solid rgba(11,47,110,.1); box-shadow:0 12px 30px rgba(7,28,68,.06)}
+    .meta-card b {display:block; color:#7384a0; font-size:.72rem; letter-spacing:.09em; text-transform:uppercase; margin-bottom:6px}
+    .meta-card span {display:block; font-size:1rem; line-height:1.45; color:#203559; font-weight:800}
+        .hero-actions {display:flex; gap:12px; flex-wrap:wrap; margin-top:28px}
+    .btn {border:0; min-height:56px; padding:0 24px; border-radius:18px; display:inline-flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; text-decoration:none; font-weight:900; font-size:1rem; transition:.25s}
+    .btn svg {width:20px; height:20px}
+    .btn-primary {background:linear-gradient(135deg,#134a9c,#0b2f6e); color:#fff; box-shadow:0 18px 38px rgba(11,47,110,.25)}
+    .btn-secondary {background:rgba(255,255,255,.82); border:1px solid rgba(11,47,110,.13); color:var(--navy)}
+    .btn:hover {transform:translateY(-2px)}
+    .hero-tags {display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin-top:34px; max-width:760px}
+    .hero-tag {min-height:94px; padding:14px 10px; display:grid; place-items:center; gap:8px; text-align:center; border-radius:24px; background:rgba(255,255,255,.8); border:1px solid rgba(11,47,110,.1); box-shadow:0 14px 34px rgba(7,28,68,.06); font-size:.72rem; font-weight:950; letter-spacing:.05em; text-transform:uppercase; color:#194b8e}
+    .hero-tag svg {width:30px; height:30px}
+    .hero-tag:first-child {color:#ef5350}
+    .hero-visual {position:relative; min-height:720px; display:grid; place-items:center}
+    .hero-panel {position:absolute; right:6%; top:5%; bottom:8%; width:60%; border-radius:34px; background:linear-gradient(180deg, rgba(233,241,255,.82), rgba(233,241,255,.3)); border:1px solid rgba(11,47,110,.08)}
+    .hero-ring {position:absolute; width:min(580px, 96%); aspect-ratio:1; border-radius:50%; border:1px solid rgba(28,88,180,.14); animation:spinSlow 28s linear infinite}
+    .hero-ring::before,.hero-ring::after {content:""; position:absolute; inset:10%; border-radius:50%; border:1px dashed rgba(28,88,180,.14)}
+    .hero-ring::after {inset:23%}
+    .hero-icon {position:absolute; width:64px; height:64px; border-radius:20px; display:grid; place-items:center; background:rgba(255,255,255,.9); border:1px solid rgba(11,47,110,.1); color:#1b57af; box-shadow:0 16px 32px rgba(7,28,68,.08); animation:floatY 4.5s ease-in-out infinite}
+    .hero-icon svg {width:30px; height:30px}
+    .hero-icon.i1 {top:16%; right:8%}
+    .hero-icon.i2 {left:8%; top:42%; animation-delay:.7s}
+    .hero-icon.i3 {right:6%; bottom:20%; animation-delay:1.3s}
+    .hero-mascot-wrap {position:relative; z-index:2; width:min(620px, 100%); animation:floatHero 5.5s ease-in-out infinite}
+    .hero-mascot {width:100%; height:auto; filter:drop-shadow(0 34px 30px rgba(7,28,68,.2))}
+    @keyframes floatHero {0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+    @keyframes floatY {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes spinSlow {to{transform:rotate(360deg)}}
+
+    .section-header {position:relative; padding:84px 0 0 100px; margin-bottom:28px}
+    .section-title {margin:20px 0 12px; font-size:clamp(3rem,6vw,5rem); line-height:.96; letter-spacing:-.06em; color:var(--navy)}
+    .section-lead {margin:0; color:var(--muted); font-size:1.18rem; line-height:1.72; max-width:760px}
+
+    .concept-card {display:grid; grid-template-columns:120px 1fr; gap:24px; align-items:center; padding:36px; border-radius:32px; background:rgba(255,255,255,.84); border:1px solid rgba(239,83,80,.16); box-shadow:var(--shadow)}
+    .concept-icon {width:88px; height:88px; border-radius:28px; display:grid; place-items:center; color:#ef5350; background:#fff4f3; border:1px solid rgba(239,83,80,.14); box-shadow:inset 8px 0 0 #ff6b61}
+    .concept-icon svg {width:46px; height:46px}
+    .concept-card p {margin:0; font-size:1.32rem; line-height:1.7; color:#29405f; font-weight:800}
+
+    .evidence-grid {display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:18px; margin-top:30px}
+    .evidence-card {min-height:132px; border-radius:26px; padding:22px; background:rgba(255,255,255,.86); border:1px solid rgba(11,47,110,.1); box-shadow:0 14px 34px rgba(7,28,68,.07); display:flex; gap:16px; align-items:flex-start}
+    .evidence-icon {flex:0 0 62px; width:62px; height:62px; border-radius:20px; display:grid; place-items:center; background:#edf4ff; border:1px solid #dceaff; color:#1d58b0}
+    .evidence-icon svg {width:30px; height:30px}
+    .evidence-card strong {display:block; font-size:1.02rem; color:#28405f; line-height:1.45}
+    .evidence-card small {display:block; color:#7b8ca7; font-weight:700; margin-top:4px}
+
+    .levels-wrap {display:grid; gap:24px}
+    .ruler-wrap {padding:14px; border-radius:28px; background:rgba(255,255,255,.84); border:1px solid var(--line); box-shadow:var(--shadow)}
+    .level-ruler {display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); border-radius:20px; overflow:hidden}
+    .level-tab {border:0; min-height:102px; padding:14px 12px; color:#fff; display:grid; place-items:center; gap:4px; font-weight:900; cursor:pointer; transition:.25s}
+    .level-tab:nth-child(1){background:#ef5350} .level-tab:nth-child(2){background:#f6a623} .level-tab:nth-child(3){background:#4c9bd5} .level-tab:nth-child(4){background:#2fb071} .level-tab:nth-child(5){background:#c7a13a}
+    .level-tab b {font-size:1.9rem; line-height:1}
+    .level-tab span {font-size:.76rem; letter-spacing:.1em; text-transform:uppercase}
+    .level-tab small {font-size:.68rem; letter-spacing:.14em; opacity:.9}
+    .level-tab.is-selected {filter:saturate(1.05); transform:translateY(-6px); box-shadow:0 16px 28px rgba(7,28,68,.18)}
+
+    .interactive-stage {position:relative; min-height:660px; border-radius:34px; padding:30px; background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(242,247,253,.92)); border:1px solid rgba(11,47,110,.08); box-shadow:var(--shadow); overflow:hidden}
+    .interactive-stage::before {content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(11,47,110,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(11,47,110,.05) 1px,transparent 1px); background-size:32px 32px; mask-image:linear-gradient(180deg, transparent, black 18%, black 82%, transparent)}
+        .stage-content {position:relative; z-index:2; display:none}
+        .interactive-stage.has-level .stage-content {display:grid; grid-template-columns:260px minmax(520px, 1fr) 220px; gap:24px; align-items:center; min-height:600px}
+    .stage-side {display:flex; flex-direction:column; justify-content:space-between; gap:22px; align-self:stretch}
+    .stage-status {display:flex; align-items:center; gap:10px; font-size:.84rem; text-transform:uppercase; letter-spacing:.12em; color:var(--accent); font-weight:950}
+    .stage-status::before {content:""; width:11px; height:11px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 7px rgba(var(--accent-rgb),.12)}
+    .stage-copy h3 {margin:8px 0 14px; font-size:clamp(2.4rem,4vw,3.9rem); line-height:.95; letter-spacing:-.05em; color:var(--navy); max-width:240px; overflow-wrap:anywhere}
+    .stage-copy p {margin:0; font-size:1.08rem; color:#6b7d98; line-height:1.72; max-width:240px}
+    .stage-nav {display:grid; gap:12px; align-content:end}
+    .stage-nav .btn {justify-content:flex-start; padding-inline:18px}
+    .btn-accent {background:var(--accent); color:#fff; box-shadow:0 16px 30px rgba(var(--accent-rgb),.24)}
+    .btn-ghost {background:rgba(255,255,255,.88); border:1px solid rgba(11,47,110,.12); color:var(--navy)}
+
+    .flip-scene {perspective:1800px; width:min(620px,100%); justify-self:center;}
+    .flip-card {position:relative; width:100%; min-height:620px; border:0; background:transparent; padding:0; cursor:pointer; transform-style:preserve-3d; transition:transform .9s cubic-bezier(.2,.76,.2,1)}
+    .flip-card.is-flipped {transform:rotateY(180deg)}
+    .card-face {position:absolute; inset:0; border-radius:34px; backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden; background:linear-gradient(180deg,#fff 0%, rgba(255,255,255,.95) 100%); border:1px solid rgba(var(--accent-rgb),.24); box-shadow:0 24px 56px rgba(7,28,68,.15)}
+    .card-face::before {content:""; position:absolute; inset:0; background:radial-gradient(circle at 85% 10%, rgba(var(--accent-rgb),.16), transparent 24rem),linear-gradient(145deg, transparent 68%, rgba(var(--accent-rgb),.05) 100%)}
+    .card-front {display:grid; grid-template-rows:auto 1fr auto}
+    .card-top {position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; padding:24px 28px 0}
+    .level-chip {display:flex; align-items:center; gap:12px}
+    .level-number {width:56px; height:56px; border-radius:18px; display:grid; place-items:center; background:var(--accent); color:#fff; font-weight:950; font-size:1.55rem; box-shadow:0 14px 26px rgba(var(--accent-rgb),.24)}
+    .stars {font-size:1.2rem; font-weight:950; letter-spacing:.16em; color:var(--accent)}
+    .card-label {color:var(--accent); font-size:.84rem; font-weight:950; letter-spacing:.12em; text-transform:uppercase}
+    .mascot-zone {position:relative; z-index:2; display:grid; place-items:end center; padding:0 22px}
+    .mascot-zone::after {content:""; position:absolute; left:16%; right:16%; bottom:4%; height:36px; border-radius:50%; background:rgba(var(--accent-rgb),.12); filter:blur(16px)}
+    .card-mascot {position:relative; z-index:2; max-height:390px; width:auto; object-fit:contain; filter:drop-shadow(0 16px 16px rgba(7,28,68,.12))}
+    .react-badge {position:absolute; right:22px; top:50%; transform:translateY(-50%); width:70px; height:70px; border-radius:50%; display:grid; place-items:center; background:var(--accent); color:#fff; font-size:1.9rem; box-shadow:0 16px 28px rgba(var(--accent-rgb),.24)}
+    .card-copy {position:relative; z-index:2; margin:0 24px 24px; padding:22px; border-radius:26px; background:rgba(255,255,255,.92); border:1px solid rgba(var(--accent-rgb),.15); box-shadow:0 14px 32px rgba(7,28,68,.08)}
+    .card-copy h4 {margin:0 0 10px; font-size:2rem; color:var(--accent); letter-spacing:-.03em}
+    .card-copy p {margin:0; color:#566780; line-height:1.62; font-size:1.02rem}
+
+    .card-back {transform:rotateY(180deg); display:grid; grid-template-rows:auto 1fr}
+    .pdi-head {position:relative; z-index:2; display:flex; align-items:center; gap:16px; min-height:118px; padding:28px; color:#fff; background:linear-gradient(135deg,var(--accent), rgba(var(--accent-rgb),.84))}
+    .pdi-head-icon {width:60px; height:60px; border-radius:18px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.24); background:rgba(255,255,255,.16)}
+    .pdi-head-icon svg {width:30px; height:30px}
+    .pdi-head small {display:block; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; opacity:.92; font-weight:850; margin-bottom:6px}
+    .pdi-head h4 {margin:0; font-size:1.75rem}
+    .pdi-body {position:relative; z-index:2; padding:28px 30px; display:flex; align-items:center}
+    .pdi-list {list-style:none; margin:0; padding:0; width:100%; display:grid; gap:18px; counter-reset:item}
+    .pdi-list li {counter-increment:item; display:grid; grid-template-columns:52px 1fr; gap:16px; align-items:start; color:#334766; font-size:1.04rem; font-weight:800; line-height:1.5}
+    .pdi-list li::before {content:counter(item); width:44px; height:44px; border-radius:14px; display:grid; place-items:center; background:rgba(var(--accent-rgb),.1); color:var(--accent); font-weight:950}
+
+    .reaction-stack {display:grid; gap:20px; align-content:center}
+    .reaction-bubble {padding:24px 20px; border-radius:24px; background:rgba(255,255,255,.92); border:1px solid rgba(11,47,110,.1); box-shadow:0 16px 30px rgba(7,28,68,.07); color:#42557a; font-size:1.08rem; line-height:1.72; font-weight:850; min-height:220px; display:flex; align-items:center}
+    .toast {display:none}
+    .emoji-burst {position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); font-size:clamp(1.6rem,3vw,2.8rem); z-index:245; pointer-events:none; animation:emojiBlast 1100ms cubic-bezier(.18,.72,.18,1) forwards; text-shadow:0 10px 24px rgba(7,28,68,.22)}
+    @keyframes emojiBlast {0% {transform:translate(-50%,-50%) scale(.3); opacity:0} 18% {opacity:1} 100% {transform:translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(var(--r)) scale(1.25); opacity:0}}
+    .confetti {position:fixed; top:-12px; width:12px; height:22px; border-radius:5px; z-index:240; animation:fall var(--dur) ease-in forwards}
+    @keyframes fall {to {transform:translate3d(var(--drift), 112vh, 0) rotate(var(--rot)); opacity:.92}}
+
+    @media (max-width: 1180px) {
+      .hero-grid {grid-template-columns:1fr}
+      .hero-visual {min-height:540px; order:-1}
+      .hero-panel {left:14%; right:14%; width:auto}
+      .hero-meta {grid-template-columns:1fr}
+      .evidence-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+      .interactive-stage.has-level .stage-content {grid-template-columns:1fr; gap:20px}
+      .flip-scene {width:min(680px,100%)}
+      .stage-copy h3 {font-size:4rem}
+      .chronology {display:none}
+    }
+    @media (max-width: 860px) {
+      html {scroll-snap-type:none}
+      .site-header {height:auto; padding:12px 0}
+      .header-inner {flex-wrap:wrap; justify-content:center}
+      .brand {width:100%; justify-content:center}
+      .main-nav {justify-content:center}
+      .page {padding:34px 0 40px; min-height:auto}
+      .container {width:min(100% - 28px, 1320px)}
+      .hero-copy h1 {font-size:clamp(3.2rem,17vw,5.6rem)}
+      .team-inline {font-size:.98rem; line-height:1.75}
+      .hero-tags {grid-template-columns:repeat(2,minmax(0,1fr))}
+      .section-header {padding:0; margin-top:34px}
+      .step-badge {position:static; margin-bottom:18px}
+      .section-title {font-size:clamp(2.4rem,10vw,4rem)}
+      .concept-card {grid-template-columns:1fr; text-align:left}
+      .concept-card p {font-size:1.1rem}
+      .evidence-grid {grid-template-columns:1fr}
+      .level-ruler {grid-template-columns:1fr}
+      .level-tab {min-height:84px}
+      .interactive-stage {padding:18px}
+      .flip-card {min-height:590px}
+      .pdi-list li {grid-template-columns:42px 1fr; font-size:.95rem}
+      .final-panel {padding:40px 20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollBar"></span></div>
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader-mark">
+      <div class="preloader-logo">XBK</div>
+      <div class="preloader-ring"></div>
+      
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#inicio" aria-label="Ir para o início">
+        <span class="brand-mark">XBK</span>
+        <span class="brand-copy"><strong>Grupo 5</strong><span>Competências • Performance • Propósito</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação da apresentação">
+        <a href="#inicio">Início</a>
+        <a href="#conceito">Conceito</a>
+        <a href="#evidencias">IDR</a>
+        <a href="#niveis">Níveis IG</a>
+              </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="motionBtn" type="button" aria-label="Pausar animações" title="Pausar animações">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14M16 5v14"/></svg>
+        </button>
+        <button class="icon-btn" id="fullscreenBtn" type="button" aria-label="Ativar tela cheia" title="Tela cheia">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <aside class="chronology" aria-label="Cronologia do projeto">
+    <a href="#inicio">0</a>
+    <a href="#conceito">1</a>
+    <a href="#evidencias">2</a>
+    <a href="#niveis">3</a>
+  </aside>
+
+  <main>
+    <section class="page hero" id="inicio">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="kicker">Soft Skill Atitudinal</div>
+          <h1>Autogestão <br>e <em>Proatividade</em></h1>
+          <p class="hero-sub">GRUPO 5</p>
+          <div class="team-inline"><strong>Integrantes:</strong> Ian Oliveira • Jorge Souza • Juliana Barbosa • Paula Oliveira • Rebeca Oliveira • Siluane Rodrigues Webler</div>
+          <div class="hero-meta">
+            <div class="meta-card"><b>Disciplina</b><span>Gestão de Desempenho, Produtividade e Carreira</span></div>
+            <div class="meta-card"><b>Professor</b><span>Milton Marinho Nogueira Junior</span></div>
+            <div class="meta-card"><b>Instituição</b><span><img src="assets/ipog-logo.png" alt="IPOG" style="height:58px; width:auto; margin-top:2px; object-fit:contain"></span></div>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#conceito">Iniciar apresentação <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
+            <button class="btn btn-secondary" id="guidedBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 5 11 7-11 7z"/></svg>Modo apresentação</button>
+          </div>
+          <div class="hero-tags" aria-label="Pilares relacionados">
+            <div class="hero-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="m15 9 5-5M17 4h3v3"/></svg><span>Foco</span></div>
+            <div class="hero-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18m-12 5 2 2 4-4"/></svg><span>Planejamento</span></div>
+            <div class="hero-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5m0 14h16M7 15l4-4 3 3 5-7"/><path d="M16 7h3v3"/></svg><span>Resultados</span></div>
+            <div class="hero-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Liderança</span></div>
+            <div class="hero-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.2L5.8 21 7 14.2 2 9.3l6.9-1z"/></svg><span>Protagonismo</span></div>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Mascote de apresentação com foguete">
+          <div class="hero-panel" aria-hidden="true"></div>
+          <div class="hero-ring" aria-hidden="true"></div>
+          <div class="hero-icon i1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18m-12 5 2 2 4-4"/></svg></div>
+          <div class="hero-icon i2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <div class="hero-icon i3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V9M10 19V5M16 19v-7M22 19V2"/></svg></div>
+          <div class="hero-mascot-wrap"><img class="hero-mascot" src="assets/hero-foguete.png" alt="Miltão no foguete"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="conceito">
+      <div class="container">
+        <div class="section-header">
+          <div class="step-badge"><span class="step-num">1</span><span class="step-pill">Etapa 01</span></div>
+          <h2 class="section-title">Conceito da Competência</h2>
+        </div>
+        <div class="concept-card">
+          <div class="concept-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="m15 9 6-6M17 3h4v4"/></svg></div>
+          <p>Organiza sua rotina com autonomia, disciplina e senso de prioridade. Antecipa necessidades, identifica problemas, propõe soluções e assume responsabilidade por suas decisões, prazos e entregas, sem depender de acompanhamento constante.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="evidencias">
+      <div class="container">
+        <div class="section-header">
+          <div class="step-badge"><span class="step-num">2</span><span class="step-pill">Etapa 02</span></div>
+          <h2 class="section-title">Evidências Objetivas (IDR)</h2>
+        </div>
+        <div class="evidence-grid">
+          <article class="evidence-card"><div class="evidence-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M9 9h6M9 13h6M9 17h4"/></svg></div><div><strong>Contrato de gestão/metas</strong><small>Registro formal de objetivos e responsabilidades</small></div></article>
+          <article class="evidence-card"><div class="evidence-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10h4v10M10 20V4h4v16M16 20v-7h4v7M2 20h20"/></svg></div><div><strong>Indicadores de desempenho (KPI)</strong><small>Métricas de produtividade, prazo e resultado</small></div></article>
+          <article class="evidence-card"><div class="evidence-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8 14h3M8 18h6"/></svg></div><div><strong>Cronograma de projeto</strong><small>MS Project, Planner, Trello</small></div></article>
+          <article class="evidence-card"><div class="evidence-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></div><div><strong>Plano de ação/desenvolvimento</strong><small>Desdobramento das ações pactuadas</small></div></article>
+          <article class="evidence-card"><div class="evidence-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><strong>Feedbacks registrados</strong><small>Devolutivas formais e acompanhamento</small></div></article>
+          <article class="evidence-card"><div class="evidence-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><strong>Atas de reunião e dashboards</strong><small>Acompanhamento contínuo e evidências de rotina</small></div></article>
+          <article class="evidence-card"><div class="evidence-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><strong>Outros documentos oficiais</strong><small>Relatórios, registros e documentos correlatos</small></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="niveis">
+      <div class="container levels-wrap">
+        <div class="section-header">
+          <div class="step-badge"><span class="step-num">3</span><span class="step-pill">Etapa 03</span></div>
+          <h2 class="section-title">Níveis de Medida (IG)</h2>
+        </div>
+
+        <div class="ruler-wrap">
+          <div class="level-ruler" role="tablist" aria-label="Régua de evolução dos níveis de medida">
+            <button class="level-tab" data-level="1" role="tab" aria-selected="false"><b>1</b><span>Não Atende</span><small>IG</small></button>
+            <button class="level-tab" data-level="2" role="tab" aria-selected="false"><b>2</b><span>Atende Parcial</span><small>IG</small></button>
+            <button class="level-tab" data-level="3" role="tab" aria-selected="false"><b>3</b><span>Atende</span><small>IG</small></button>
+            <button class="level-tab" data-level="4" role="tab" aria-selected="false"><b>4</b><span>Excelente Atendimento</span><small>IG</small></button>
+            <button class="level-tab" data-level="5" role="tab" aria-selected="false"><b>5</b><span>Referência</span><small>IG</small></button>
+          </div>
+        </div>
+
+        <div class="interactive-stage has-level" id="interactiveStage">
+          <div class="stage-content">
+            <div class="stage-side stage-copy">
+              <div>
+                <div class="stage-status" id="stageStatus">Nível 1 selecionado</div>
+                <h3 id="stageTitle">Não Atende</h3>
+                <p id="stageDescription">Depende constantemente de direcionamento, perde prazos, espera receber instruções antes de agir e apresenta pouca organização.</p>
+              </div>
+              <div class="stage-nav">
+                <button class="btn btn-ghost" id="prevLevel" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>Voltar</button>
+                <button class="btn btn-accent" id="flipButton" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>Ver PDI</button>
+                <button class="btn btn-ghost" id="nextLevel" type="button">Próximo IG <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+              </div>
+            </div>
+
+            <div class="flip-scene">
+              <button class="flip-card" id="flipCard" type="button" aria-label="Virar card e revelar o PDI">
+                <div class="card-face card-front">
+                  <div class="card-top">
+                    <div class="level-chip"><span class="level-number" id="cardLevel">1</span><span class="stars" id="cardStars">★☆☆☆☆</span></div>
+                    <span class="card-label">Nível de Medida (IG)</span>
+                  </div>
+                  <div class="mascot-zone">
+                    <img class="card-mascot" id="cardMascot" src="assets/1-nao-atende.png" alt="Mascote do nível selecionado">
+                    <span class="react-badge" id="reactionBadge">☹️</span>
+                  </div>
+                  <div class="card-copy">
+                    <h4 id="cardTitle">Não Atende</h4>
+                    <p id="cardDescription">Depende constantemente de direcionamento, perde prazos, espera receber instruções antes de agir e apresenta pouca organização.</p>
+                  </div>
+                </div>
+
+                <div class="card-face card-back">
+                  <div class="pdi-head">
+                    <div class="pdi-head-icon" id="pdiIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg></div>
+                    <div><small>Plano de Desenvolvimento Individual</small><h4 id="pdiTitle">PDI 1 – Não Atende</h4></div>
+                  </div>
+                  <div class="pdi-body"><ol class="pdi-list" id="pdiList"></ol></div>
+                </div>
+              </button>
+            </div>
+
+            <aside class="reaction-stack">
+              <div class="reaction-bubble" id="mascotBubble">Neste nível o Miltão ainda precisa de GPS, checklist e um empurrão do gestor para não se perder no prazo.</div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const levels = {"1": {"title": "Não Atende", "stars": "★☆☆☆☆", "color": "#ef5350", "rgb": "239,83,80", "image": "assets/1-nao-atende.png", "tag": "Nível 1 selecionado", "description": "Depende constantemente de direcionamento, perde prazos, espera receber instruções antes de agir e apresenta pouca organização.", "pdiTitle": "PDI 1 – Não Atende", "pdi": ["Estabelecer rotina diária de planejamento.", "Desenvolver-se em ferramenta de gestão de atividades (Planner, Trello, Outlook etc.).", "Realizar alinhamentos semanais com o gestor.", "Revisar prioridades constantemente, utilizando matriz de importância x urgência.", "Desenvolver disciplina na gestão do tempo por meio de treinamentos ou mentorias.", "Trabalhar responsabilidade sobre compromissos assumidos."], "bubble": "Neste nível o Miltão ainda precisa de GPS, checklist e um empurrão do gestor para não se perder no prazo.", "emoji": "☹️", "ornament": "—", "burst": ["☹️","💥"]}, "2": {"title": "Atende Parcial", "stars": "★★☆☆☆", "color": "#f6a623", "rgb": "246,166,35", "image": "assets/2-atende-parcial.png", "tag": "Nível 2 selecionado", "description": "Cumpre parte das atividades, mas ainda necessita de acompanhamento frequente. Demonstra iniciativa apenas em situações conhecidas.", "pdiTitle": "PDI 2 – Atende Parcial", "pdi": ["Elaborar planejamento semanal com acompanhamento quinzenal.", "Antecipar riscos antes dos prazos finais.", "Propor pelo menos uma melhoria por trimestre.", "Desenvolver capacidade de tomada de decisão em atividades rotineiras.", "Buscar feedbacks frequentes sobre organização e autonomia."], "bubble": "Aqui ele já pega a estrada, mas ainda freia nas curvas: avança, porém segue pedindo carona no acompanhamento.", "emoji": "😐", "ornament": "≈", "burst": ["😐","💫"]}, "3": {"title": "Atende", "stars": "★★★☆☆", "color": "#4c9bd5", "rgb": "76,155,213", "image": "assets/3-atende.png", "tag": "Nível 3 selecionado", "description": "Organiza bem sua rotina, entrega no prazo, resolve problemas do dia a dia com autonomia e busca apoio quando necessário.", "pdiTitle": "PDI 3 – Atende", "pdi": ["Assumir projetos de maior complexidade.", "Desenvolver capacidade de antecipação de impactos para outras áreas.", "Aprimorar priorização considerando objetivos estratégicos da empresa.", "Compartilhar boas práticas de organização com a equipe.", "Participar de iniciativas de melhoria contínua."], "bubble": "Agora o Miltão já liga o motor sozinho: organiza a rota, entrega no prazo e resolve o básico sem drama.", "emoji": "🙂", "ornament": "✓", "burst": ["🙂","⭐"]}, "4": {"title": "Excelente Atendimento", "stars": "★★★★☆", "color": "#2fb071", "rgb": "47,176,113", "image": "assets/4-excelente-aura.png", "tag": "Nível 4 selecionado", "description": "Atua com elevada autonomia, antecipa problemas, propõe soluções e influencia positivamente a organização do time.", "pdiTitle": "PDI 4 – Excelente Atendimento", "pdi": ["Liderar iniciativas de melhoria de processos.", "Mentorar colegas com menor nível de autonomia.", "Desenvolver competências de gestão de projetos.", "Expandir visão sistêmica para apoiar decisões estratégicas.", "Buscar certificações ou formações em produtividade, inovação ou gestão ágil."], "bubble": "SIX, SEVENNN!! O Topísismo Miltão farmou aura, agora ele antecipa desvios, propõe soluções e já puxa o time para frente.", "emoji": "😎", "ornament": "➜", "burst": ["😎","✨","🔥","⚡"]}, "5": {"title": "Referência", "stars": "★★★★★", "color": "#c7a13a", "rgb": "199,161,58", "image": "assets/5-referencia.png", "tag": "Nível 5 selecionado", "description": "É exemplo de autogestão, inspira a equipe, cria métodos de trabalho mais eficientes e promove cultura de protagonismo.", "pdiTitle": "PDI 5 – Referência", "pdi": ["Atuar como multiplicador interno.", "Liderar projetos de transformação transversais.", "Desenvolver sucessores.", "Participar da construção de metodologias e padrões.", "Contribuir para programas de inovação e transformação."], "bubble": "No nível referência, o Miltão já virou farol da equipe: inspira, cria métodos e deixa rastro de protagonismo.", "emoji": "👑", "ornament": "★", "burst": ["👑","✨","⭐"]}};
+      const $ = (sel, root=document) => root.querySelector(sel);
+      const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+      const toast = $('#toast');
+      const stage = $('#interactiveStage');
+      const flipCard = $('#flipCard');
+      const levelTabs = $$('.level-tab');
+      let currentLevel = 0;
+      let toastTimer;
+      let motionPaused = false;
+
+      const icons = {
+        target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="m15 9 6-6M17 3h4v4"/></svg>',
+        rocket:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 13c0-4 3-7 7-7 0 0 0-4 4-4 0 0 5 0 5 5 0 4-4 8-8 8-4 0-8-2-8-2z"/><path d="M9 15 7 21l4-2 2 2 2-4"/><circle cx="15.5" cy="8.5" r="1.5"/></svg>',
+        crown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 6 4 4 5-7 5 7 4-4-2 12H5z"/><path d="M5 21h14"/></svg>',
+        chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10h4v10M10 20V4h4v16M16 20v-7h4v7M2 20h20"/></svg>',
+        medal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M10 12 7 22l5-3 5 3-3-10"/></svg>'
+      };
+
+      function showToast(message) { return; }
+
+      function setTheme(level) {
+        const data = levels[level];
+        document.documentElement.style.setProperty('--accent', data.color);
+        document.documentElement.style.setProperty('--accent-rgb', data.rgb);
+      }
+
+      function pdiIconFor(level) {
+        if (level === 4) return icons.rocket;
+        if (level === 5) return icons.crown;
+        if (level === 3) return icons.medal;
+        return icons.target;
+      }
+
+      function selectLevel(level, opts={scroll:false}) {
+        level = Math.min(5, Math.max(1, Number(level)));
+        const data = levels[level];
+        currentLevel = level;
+        setTheme(level);
+        stage.classList.add('has-level');
+        flipCard.classList.remove('is-flipped');
+        flipCard.setAttribute('aria-pressed','false');
+        levelTabs.forEach(tab => {
+          const selected = Number(tab.dataset.level) === level;
+          tab.classList.toggle('is-selected', selected);
+          tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+        });
+        $('#stageStatus').textContent = data.tag;
+        $('#stageTitle').textContent = data.title;
+        $('#stageDescription').textContent = data.description;
+        $('#cardLevel').textContent = level;
+        $('#cardStars').textContent = data.stars;
+        $('#cardTitle').textContent = data.title;
+        $('#cardDescription').textContent = data.description;
+        $('#cardMascot').src = data.image;
+        $('#reactionBadge').textContent = data.emoji;
+        $('#mascotBubble').textContent = data.bubble;
+        $('#pdiTitle').textContent = data.pdiTitle;
+        $('#pdiIcon').innerHTML = pdiIconFor(level);
+        $('#pdiList').innerHTML = data.pdi.map(item => `<li>${item}</li>`).join('');
+        $('#flipButton').innerHTML = `${icons.target}Ver PDI`;
+        $('#prevLevel').disabled = level === 1;
+        $('#nextLevel').disabled = level === 5;
+        $('#prevLevel').style.opacity = level === 1 ? '.45' : '1';
+        $('#nextLevel').style.opacity = level === 5 ? '.45' : '1';
+        if (opts.scroll) stage.scrollIntoView({behavior:'smooth', block:'center'});
+        showToast(`Nível ${level}: ${data.title}`);
+      }
+
+      function flip() {
+        if (!currentLevel) { showToast('Selecione primeiro um nível na régua.'); return; }
+        const willFlip = !flipCard.classList.contains('is-flipped');
+        flipCard.classList.toggle('is-flipped', willFlip);
+        flipCard.setAttribute('aria-pressed', willFlip ? 'true' : 'false');
+        triggerEmojiBurst(currentLevel);
+        launchEmojiBurst(levels[currentLevel].burst || [levels[currentLevel].emoji]);
+        if (willFlip) {
+          $('#flipButton').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>Voltar ao IG';
+          if (currentLevel === 5) launchConfetti();
+        } else {
+              $('#flipButton').innerHTML = `${icons.target}Ver PDI`;
+        }
+      }
+
+
+      function triggerEmojiBurst(level) {
+        const sets = {
+          1: ['☹️','💥','🫠'],
+          2: ['😐','⚡','✨'],
+          3: ['🙂','✨','✅'],
+          4: ['🚀','🔥','✨','😎'],
+          5: ['👑','⭐','🎉','✨']
+        };
+        const pool = sets[level] || ['✨'];
+        const total = 26;
+        for (let i = 0; i < total; i++) {
+          const node = document.createElement('span');
+          node.className = 'emoji-burst';
+          node.textContent = pool[Math.floor(Math.random() * pool.length)];
+          node.style.setProperty('--x', `${(Math.random() - 0.5) * (innerWidth * 0.82)}px`);
+          node.style.setProperty('--y', `${(Math.random() - 0.5) * (innerHeight * 0.82)}px`);
+          node.style.setProperty('--r', `${Math.round((Math.random() - 0.5) * 240)}deg`);
+          node.style.animationDelay = `${Math.random() * 120}ms`;
+          document.body.appendChild(node);
+          setTimeout(() => node.remove(), 1300);
+        }
+      }
+
+      function launchEmojiBurst(list) {
+        const emojis = Array.isArray(list) && list.length ? list : ["✨"];
+        const total = 24;
+        for (let i=0; i<total; i++) {
+          const el = document.createElement("span");
+          el.className = "emoji-burst";
+          el.textContent = emojis[i % emojis.length];
+          const angle = (Math.PI * 2 * i) / total;
+          const radius = 110 + Math.random() * 230;
+          el.style.setProperty("--x", `${Math.cos(angle) * radius}px`);
+          el.style.setProperty("--y", `${Math.sin(angle) * radius}px`);
+          el.style.setProperty("--r", `${(Math.random() * 120 - 60)}deg`);
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 1000);
+        }
+      }
+
+      function launchConfetti() {
+        const colors = ['#ef5350','#f6a623','#4c9bd5','#2fb071','#c7a13a','#ffffff'];
+        for (let i=0; i<70; i++) {
+          const c = document.createElement('i');
+          c.className = 'confetti';
+          c.style.left = Math.random() * 100 + 'vw';
+          c.style.background = colors[Math.floor(Math.random() * colors.length)];
+          c.style.setProperty('--dur', (2.4 + Math.random() * 2.3) + 's');
+          c.style.setProperty('--drift', ((Math.random() - .5) * 260) + 'px');
+          c.style.setProperty('--rot', Math.round(Math.random() * 360) + 'deg');
+          c.style.opacity = '.95';
+          document.body.appendChild(c);
+          setTimeout(() => c.remove(), 5200);
+        }
+      }
+
+      levelTabs.forEach(tab => tab.addEventListener('click', () => selectLevel(tab.dataset.level, {scroll:true})));
+      flipCard.addEventListener('click', flip);
+      $('#flipButton').addEventListener('click', flip);
+      $('#prevLevel').addEventListener('click', () => currentLevel > 1 && selectLevel(currentLevel - 1));
+      $('#nextLevel').addEventListener('click', () => currentLevel < 5 && selectLevel(currentLevel + 1));
+
+      document.addEventListener('keydown', (event) => {
+        if (/^[1-5]$/.test(event.key)) selectLevel(Number(event.key), {scroll:true});
+        if (event.code === 'Space' && currentLevel && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) { event.preventDefault(); flip(); }
+        if (event.key === 'ArrowRight' && currentLevel < 5) selectLevel(currentLevel + 1);
+        if (event.key === 'ArrowLeft' && currentLevel > 1) selectLevel(currentLevel - 1);
+        if (event.key.toLowerCase() === 'f') toggleFullscreen();
+      });
+
+      async function toggleFullscreen() {
+        try {
+          if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
+            document.body.classList.add('presentation-mode');
+            showToast('Modo tela cheia ativado.');
+          } else {
+            await document.exitFullscreen();
+          }
+        } catch (e) { showToast('Tela cheia não disponível neste navegador.'); }
+      }
+      $('#fullscreenBtn').addEventListener('click', toggleFullscreen);
+      $('#guidedBtn').addEventListener('click', async () => {
+        await toggleFullscreen();
+        setTimeout(() => $('#conceito').scrollIntoView({behavior:'smooth'}), 180);
+      });
+      document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) document.body.classList.remove('presentation-mode'); });
+
+      $('#motionBtn').addEventListener('click', (ev) => {
+        motionPaused = !motionPaused;
+        document.body.classList.toggle('motion-paused', motionPaused);
+        if (!$('#motionStyle')) {
+          const s = document.createElement('style');
+          s.id = 'motionStyle';
+          s.textContent = '.motion-paused *, .motion-paused *::before, .motion-paused *::after{animation-play-state:paused!important; transition:none!important}';
+          document.head.appendChild(s);
+        }
+        ev.currentTarget.innerHTML = motionPaused
+          ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 11 7-11 7z"/></svg>'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14M16 5v14"/></svg>';
+        ev.currentTarget.title = motionPaused ? 'Retomar animações' : 'Pausar animações';
+        showToast(motionPaused ? 'Animações pausadas.' : 'Animações retomadas.');
+      });
+
+      const sections = $$('main section[id]');
+      const navLinks = $$('a[href^="#"]');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          navLinks.forEach(link => link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`));
+        });
+      }, {rootMargin:'-45% 0px -45% 0px'});
+      sections.forEach(s => observer.observe(s));
+
+      window.addEventListener('scroll', () => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        $('#scrollBar').style.width = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
+      }, {passive:true});
+
+      window.addEventListener('load', () => setTimeout(() => $('#preloader').classList.add('is-hidden'), 520));
+      setTimeout(() => $('#preloader').classList.add('is-hidden'), 1600);
+      selectLevel(1);
+    })();
+  </script>
+</body>
+</html>

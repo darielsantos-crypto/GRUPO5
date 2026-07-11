@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="86" viewBox="0 0 300 86" fill="none">
+<rect width="300" height="86" rx="18" fill="#ffffff"/>
+<rect x="2" y="2" width="296" height="82" rx="16" stroke="#D9E6FA" stroke-width="4"/>
+<circle cx="34" cy="43" r="16" fill="#0A3473"/>
+<path d="M26 43h16M34 35v16" stroke="#F6C24A" stroke-width="4" stroke-linecap="round"/>
+<text x="62" y="39" font-size="28" font-family="Arial, Helvetica, sans-serif" font-weight="800" fill="#0A3473">IPOG</text>
+<text x="62" y="62" font-size="14" font-family="Arial, Helvetica, sans-serif" font-weight="600" fill="#6C7E9A">Especialização e Pós-graduação</text>
+</svg>
