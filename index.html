@@ -60,7 +60,7 @@
     .chronology a.is-active,.chronology a:hover {background:var(--navy); color:#fff}
 
     main {position:relative}
-    .page {min-height:calc(100svh - var(--header)); scroll-snap-align:start; scroll-snap-stop:always; display:flex; align-items:center; padding:40px 0 44px; position:relative}
+    .page {min-height:calc(100svh - var(--header)); scroll-snap-align:start; scroll-snap-stop:always; display:flex; align-items:center; padding:40px 0 44px; position:relative; scroll-margin-top:110px}
     .container {width:min(1320px, calc(100% - 64px)); margin:auto}
     .kicker {display:inline-flex; align-items:center; gap:10px; padding:10px 16px; border-radius:999px; background:#e9f1ff; border:1px solid #cfe0ff; color:#1c58b4; font-size:.82rem; font-weight:900; letter-spacing:.1em; text-transform:uppercase}
     .kicker::before {content:""; width:10px; height:10px; border-radius:50%; background:currentColor; box-shadow:0 0 0 6px rgba(28,88,180,.12)}
@@ -147,9 +147,9 @@
     .btn-ghost {background:rgba(255,255,255,.88); border:1px solid rgba(11,47,110,.12); color:var(--navy)}
 
     .flip-scene {perspective:1800px; width:min(620px,100%); justify-self:center;}
-    .flip-card {position:relative; width:100%; min-height:620px; border:0; background:transparent; padding:0; cursor:pointer; transform-style:preserve-3d; transition:transform .9s cubic-bezier(.2,.76,.2,1)}
+    .flip-card {position:relative; width:100%; min-height:620px; border:0; background:transparent; padding:0; cursor:pointer; transform-style:preserve-3d; transition:transform .9s cubic-bezier(.2,.76,.2,1); -webkit-transform-style:preserve-3d}
     .flip-card.is-flipped {transform:rotateY(180deg)}
-    .card-face {position:absolute; inset:0; border-radius:34px; backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden; background:linear-gradient(180deg,#fff 0%, rgba(255,255,255,.95) 100%); border:1px solid rgba(var(--accent-rgb),.24); box-shadow:0 24px 56px rgba(7,28,68,.15)}
+    .card-face {position:absolute; inset:0; border-radius:34px; backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden; background:linear-gradient(180deg,#fff 0%, rgba(255,255,255,.95) 100%); border:1px solid rgba(var(--accent-rgb),.24); box-shadow:0 24px 56px rgba(7,28,68,.15); transform-style:preserve-3d; -webkit-transform-style:preserve-3d}
     .card-face::before {content:""; position:absolute; inset:0; background:radial-gradient(circle at 85% 10%, rgba(var(--accent-rgb),.16), transparent 24rem),linear-gradient(145deg, transparent 68%, rgba(var(--accent-rgb),.05) 100%)}
     .card-front {display:grid; grid-template-rows:auto 1fr auto}
     .card-top {position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; padding:24px 28px 0}
@@ -197,27 +197,67 @@
     }
     @media (max-width: 860px) {
       html {scroll-snap-type:none}
-      .site-header {height:auto; padding:12px 0}
-      .header-inner {flex-wrap:wrap; justify-content:center}
-      .brand {width:100%; justify-content:center}
-      .main-nav {justify-content:center}
-      .page {padding:34px 0 40px; min-height:auto}
-      .container {width:min(100% - 28px, 1320px)}
-      .hero-copy h1 {font-size:clamp(3.2rem,17vw,5.6rem)}
-      .team-inline {font-size:.98rem; line-height:1.75}
+      body {overflow-x:hidden}
+      .site-header {height:auto; padding:10px 0 12px}
+      .header-inner {width:min(100% - 24px, 1320px); flex-wrap:wrap; justify-content:center; gap:12px}
+      .brand {width:100%; justify-content:flex-start; gap:12px}
+      .brand-mark {width:58px; height:58px; border-radius:16px; font-size:1.95rem}
+      .brand-copy strong {font-size:1.2rem}
+      .brand-copy span {font-size:.88rem; line-height:1.35}
+      .main-nav {width:100%; justify-content:space-between; gap:8px}
+      .main-nav a {flex:1 1 auto; text-align:center; padding:12px 10px; font-size:1rem}
+      .header-actions {width:100%; justify-content:center}
+      .icon-btn {width:56px; height:56px}
+      .page {padding:24px 0 34px; min-height:auto}
+      .container {width:min(100% - 20px, 1320px)}
+      .hero-copy h1 {font-size:clamp(3rem,17vw,5rem)}
+      .hero-sub {font-size:1rem}
+      .team-inline {font-size:.94rem; line-height:1.7}
       .hero-tags {grid-template-columns:repeat(2,minmax(0,1fr))}
-      .section-header {padding:0; margin-top:34px}
-      .step-badge {position:static; margin-bottom:18px}
-      .section-title {font-size:clamp(2.4rem,10vw,4rem)}
-      .concept-card {grid-template-columns:1fr; text-align:left}
-      .concept-card p {font-size:1.1rem}
+      .section-header {padding:0; margin-top:12px}
+      .step-badge {position:static; margin-bottom:16px}
+      .step-num {width:52px; height:52px; border-radius:18px; font-size:1.5rem}
+      .step-pill {padding:10px 14px; font-size:.78rem}
+      .section-title {font-size:clamp(2.15rem,11vw,3.2rem); line-height:.98}
+      .concept-card {grid-template-columns:1fr; text-align:left; padding:24px}
+      .concept-card p {font-size:1rem; line-height:1.65}
       .evidence-grid {grid-template-columns:1fr}
       .level-ruler {grid-template-columns:1fr}
-      .level-tab {min-height:84px}
-      .interactive-stage {padding:18px}
-      .flip-card {min-height:590px}
-      .pdi-list li {grid-template-columns:42px 1fr; font-size:.95rem}
-      .final-panel {padding:40px 20px}
+      .level-tab {min-height:78px}
+      .interactive-stage {padding:14px; border-radius:28px; scroll-margin-top:170px}
+      .interactive-stage.has-level .stage-content {grid-template-columns:1fr; gap:16px; min-height:auto}
+      .flip-scene {order:1; width:100%}
+      .stage-copy {order:2; gap:16px}
+      .reaction-stack {order:3}
+      .stage-copy h3 {font-size:clamp(2rem,10vw,2.85rem); line-height:1.02; max-width:none; overflow-wrap:normal; word-break:normal; hyphens:none}
+      .stage-copy p {font-size:1rem; max-width:none; line-height:1.6}
+      .stage-nav {gap:10px}
+      .stage-nav .btn {min-height:52px; font-size:1rem}
+      .reaction-bubble {min-height:auto; padding:20px 18px; font-size:1rem}
+      .flip-card {min-height:auto; width:100%; transform:none !important; transition:none}
+      .card-face {position:relative; inset:auto; min-height:auto; transform:none !important; -webkit-backface-visibility:visible; backface-visibility:visible}
+      .card-front, .card-back {display:none}
+      .flip-card:not(.is-flipped) .card-front {display:grid}
+      .flip-card.is-flipped .card-back {display:grid}
+      .card-top {padding:18px 18px 0; gap:10px; align-items:flex-start}
+      .level-number {width:48px; height:48px; font-size:1.3rem}
+      .stars {font-size:1rem; letter-spacing:.08em}
+      .card-label {font-size:.74rem; text-align:right}
+      .mascot-zone {padding:4px 16px 0}
+      .card-mascot {max-height:260px; max-width:72%; height:auto}
+      .react-badge {width:58px; height:58px; right:16px; top:46%; font-size:1.55rem}
+      .card-copy {margin:0 14px 14px; padding:18px; border-radius:22px}
+      .card-copy h4 {font-size:1.8rem; line-height:1.05}
+      .card-copy p {font-size:.98rem; line-height:1.55}
+      .pdi-head {min-height:auto; padding:18px; gap:12px}
+      .pdi-head h4 {font-size:1.25rem; line-height:1.2}
+      .pdi-head small {font-size:.7rem}
+      .pdi-head-icon {width:52px; height:52px; border-radius:16px}
+      .pdi-body {padding:18px 16px}
+      .pdi-list {gap:14px}
+      .pdi-list li {grid-template-columns:38px 1fr; gap:12px; font-size:.96rem; line-height:1.45}
+      .pdi-list li::before {width:38px; height:38px; border-radius:12px}
+      .pdi-foot {margin:0 16px 16px; padding:14px; font-size:.8rem}
     }
   </style>
 </head>
@@ -273,7 +313,7 @@
           <div class="hero-meta">
             <div class="meta-card"><b>Disciplina</b><span>Gestão de Desempenho, Produtividade e Carreira</span></div>
             <div class="meta-card"><b>Professor</b><span>Milton Marinho Nogueira Junior</span></div>
-            <div class="meta-card"><b>Instituição</b><span><img src="assets/ipog-logo.png" alt="IPOG" style="height:58px; width:auto; margin-top:2px; object-fit:contain"></span></div>
+            <div class="meta-card"><b>Instituição</b><span><img src="autogestao-proatividade-site/assets/ipog-logo.png" alt="IPOG" style="height:58px; width:auto; margin-top:2px; object-fit:contain"></span></div>
           </div>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#conceito">Iniciar apresentação <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a>
@@ -293,7 +333,7 @@
           <div class="hero-icon i1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18m-12 5 2 2 4-4"/></svg></div>
           <div class="hero-icon i2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
           <div class="hero-icon i3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V9M10 19V5M16 19v-7M22 19V2"/></svg></div>
-          <div class="hero-mascot-wrap"><img class="hero-mascot" src="assets/hero-foguete.png" alt="Miltão no foguete"></div>
+          <div class="hero-mascot-wrap"><img class="hero-mascot" src="autogestao-proatividade-site/assets/hero-foguete.png" alt="Miltão no foguete"></div>
         </div>
       </div>
     </section>
@@ -369,7 +409,7 @@
                     <span class="card-label">Nível de Medida (IG)</span>
                   </div>
                   <div class="mascot-zone">
-                    <img class="card-mascot" id="cardMascot" src="assets/1-nao-atende.png" alt="Mascote do nível selecionado">
+                    <img class="card-mascot" id="cardMascot" src="autogestao-proatividade-site/assets/1-nao-atende.png" alt="Mascote do nível selecionado">
                     <span class="react-badge" id="reactionBadge">☹️</span>
                   </div>
                   <div class="card-copy">
@@ -401,7 +441,7 @@
 
   <script>
     (() => {
-      const levels = {"1": {"title": "Não Atende", "stars": "★☆☆☆☆", "color": "#ef5350", "rgb": "239,83,80", "image": "assets/1-nao-atende.png", "tag": "Nível 1 selecionado", "description": "Depende constantemente de direcionamento, perde prazos, espera receber instruções antes de agir e apresenta pouca organização.", "pdiTitle": "PDI 1 – Não Atende", "pdi": ["Estabelecer rotina diária de planejamento.", "Desenvolver-se em ferramenta de gestão de atividades (Planner, Trello, Outlook etc.).", "Realizar alinhamentos semanais com o gestor.", "Revisar prioridades constantemente, utilizando matriz de importância x urgência.", "Desenvolver disciplina na gestão do tempo por meio de treinamentos ou mentorias.", "Trabalhar responsabilidade sobre compromissos assumidos."], "bubble": "Neste nível o Miltão ainda precisa de GPS, checklist e um empurrão do gestor para não se perder no prazo.", "emoji": "☹️", "ornament": "—", "burst": ["☹️","💥"]}, "2": {"title": "Atende Parcial", "stars": "★★☆☆☆", "color": "#f6a623", "rgb": "246,166,35", "image": "assets/2-atende-parcial.png", "tag": "Nível 2 selecionado", "description": "Cumpre parte das atividades, mas ainda necessita de acompanhamento frequente. Demonstra iniciativa apenas em situações conhecidas.", "pdiTitle": "PDI 2 – Atende Parcial", "pdi": ["Elaborar planejamento semanal com acompanhamento quinzenal.", "Antecipar riscos antes dos prazos finais.", "Propor pelo menos uma melhoria por trimestre.", "Desenvolver capacidade de tomada de decisão em atividades rotineiras.", "Buscar feedbacks frequentes sobre organização e autonomia."], "bubble": "Aqui ele já pega a estrada, mas ainda freia nas curvas: avança, porém segue pedindo carona no acompanhamento.", "emoji": "😐", "ornament": "≈", "burst": ["😐","💫"]}, "3": {"title": "Atende", "stars": "★★★☆☆", "color": "#4c9bd5", "rgb": "76,155,213", "image": "assets/3-atende.png", "tag": "Nível 3 selecionado", "description": "Organiza bem sua rotina, entrega no prazo, resolve problemas do dia a dia com autonomia e busca apoio quando necessário.", "pdiTitle": "PDI 3 – Atende", "pdi": ["Assumir projetos de maior complexidade.", "Desenvolver capacidade de antecipação de impactos para outras áreas.", "Aprimorar priorização considerando objetivos estratégicos da empresa.", "Compartilhar boas práticas de organização com a equipe.", "Participar de iniciativas de melhoria contínua."], "bubble": "Agora o Miltão já liga o motor sozinho: organiza a rota, entrega no prazo e resolve o básico sem drama.", "emoji": "🙂", "ornament": "✓", "burst": ["🙂","⭐"]}, "4": {"title": "Excelente Atendimento", "stars": "★★★★☆", "color": "#2fb071", "rgb": "47,176,113", "image": "assets/4-excelente-aura.png", "tag": "Nível 4 selecionado", "description": "Atua com elevada autonomia, antecipa problemas, propõe soluções e influencia positivamente a organização do time.", "pdiTitle": "PDI 4 – Excelente Atendimento", "pdi": ["Liderar iniciativas de melhoria de processos.", "Mentorar colegas com menor nível de autonomia.", "Desenvolver competências de gestão de projetos.", "Expandir visão sistêmica para apoiar decisões estratégicas.", "Buscar certificações ou formações em produtividade, inovação ou gestão ágil."], "bubble": "SIX, SEVENNN!! O Topísismo Miltão farmou aura, agora ele antecipa desvios, propõe soluções e já puxa o time para frente.", "emoji": "😎", "ornament": "➜", "burst": ["😎","✨","🔥","⚡"]}, "5": {"title": "Referência", "stars": "★★★★★", "color": "#c7a13a", "rgb": "199,161,58", "image": "assets/5-referencia.png", "tag": "Nível 5 selecionado", "description": "É exemplo de autogestão, inspira a equipe, cria métodos de trabalho mais eficientes e promove cultura de protagonismo.", "pdiTitle": "PDI 5 – Referência", "pdi": ["Atuar como multiplicador interno.", "Liderar projetos de transformação transversais.", "Desenvolver sucessores.", "Participar da construção de metodologias e padrões.", "Contribuir para programas de inovação e transformação."], "bubble": "No nível referência, o Miltão já virou farol da equipe: inspira, cria métodos e deixa rastro de protagonismo.", "emoji": "👑", "ornament": "★", "burst": ["👑","✨","⭐"]}};
+      const levels = {"1": {"title": "Não Atende", "stars": "★☆☆☆☆", "color": "#ef5350", "rgb": "239,83,80", "image": "autogestao-proatividade-site/assets/1-nao-atende.png", "tag": "Nível 1 selecionado", "description": "Depende constantemente de direcionamento, perde prazos, espera receber instruções antes de agir e apresenta pouca organização.", "pdiTitle": "PDI 1 – Não Atende", "pdi": ["Estabelecer rotina diária de planejamento.", "Desenvolver-se em ferramenta de gestão de atividades (Planner, Trello, Outlook etc.).", "Realizar alinhamentos semanais com o gestor.", "Revisar prioridades constantemente, utilizando matriz de importância x urgência.", "Desenvolver disciplina na gestão do tempo por meio de treinamentos ou mentorias.", "Trabalhar responsabilidade sobre compromissos assumidos."], "bubble": "Neste nível o Miltão ainda precisa de GPS, checklist e um empurrão do gestor para não se perder no prazo.", "emoji": "☹️", "ornament": "—", "burst": ["☹️","💥"]}, "2": {"title": "Atende Parcial", "stars": "★★☆☆☆", "color": "#f6a623", "rgb": "246,166,35", "image": "autogestao-proatividade-site/assets/2-atende-parcial.png", "tag": "Nível 2 selecionado", "description": "Cumpre parte das atividades, mas ainda necessita de acompanhamento frequente. Demonstra iniciativa apenas em situações conhecidas.", "pdiTitle": "PDI 2 – Atende Parcial", "pdi": ["Elaborar planejamento semanal com acompanhamento quinzenal.", "Antecipar riscos antes dos prazos finais.", "Propor pelo menos uma melhoria por trimestre.", "Desenvolver capacidade de tomada de decisão em atividades rotineiras.", "Buscar feedbacks frequentes sobre organização e autonomia."], "bubble": "Aqui ele já pega a estrada, mas ainda freia nas curvas: avança, porém segue pedindo carona no acompanhamento.", "emoji": "😐", "ornament": "≈", "burst": ["😐","💫"]}, "3": {"title": "Atende", "stars": "★★★☆☆", "color": "#4c9bd5", "rgb": "76,155,213", "image": "autogestao-proatividade-site/assets/3-atende.png", "tag": "Nível 3 selecionado", "description": "Organiza bem sua rotina, entrega no prazo, resolve problemas do dia a dia com autonomia e busca apoio quando necessário.", "pdiTitle": "PDI 3 – Atende", "pdi": ["Assumir projetos de maior complexidade.", "Desenvolver capacidade de antecipação de impactos para outras áreas.", "Aprimorar priorização considerando objetivos estratégicos da empresa.", "Compartilhar boas práticas de organização com a equipe.", "Participar de iniciativas de melhoria contínua."], "bubble": "Agora o Miltão já liga o motor sozinho: organiza a rota, entrega no prazo e resolve o básico sem drama.", "emoji": "🙂", "ornament": "✓", "burst": ["🙂","⭐"]}, "4": {"title": "Excelente Atendimento", "stars": "★★★★☆", "color": "#2fb071", "rgb": "47,176,113", "image": "autogestao-proatividade-site/assets/4-excelente-aura.png", "tag": "Nível 4 selecionado", "description": "Atua com elevada autonomia, antecipa problemas, propõe soluções e influencia positivamente a organização do time.", "pdiTitle": "PDI 4 – Excelente Atendimento", "pdi": ["Liderar iniciativas de melhoria de processos.", "Mentorar colegas com menor nível de autonomia.", "Desenvolver competências de gestão de projetos.", "Expandir visão sistêmica para apoiar decisões estratégicas.", "Buscar certificações ou formações em produtividade, inovação ou gestão ágil."], "bubble": "SIX, SEVENNN!! O Topísismo Miltão farmou aura, agora ele antecipa desvios, propõe soluções e já puxa o time para frente.", "emoji": "😎", "ornament": "➜", "burst": ["😎","✨","🔥","⚡"]}, "5": {"title": "Referência", "stars": "★★★★★", "color": "#c7a13a", "rgb": "199,161,58", "image": "autogestao-proatividade-site/assets/5-referencia.png", "tag": "Nível 5 selecionado", "description": "É exemplo de autogestão, inspira a equipe, cria métodos de trabalho mais eficientes e promove cultura de protagonismo.", "pdiTitle": "PDI 5 – Referência", "pdi": ["Atuar como multiplicador interno.", "Liderar projetos de transformação transversais.", "Desenvolver sucessores.", "Participar da construção de metodologias e padrões.", "Contribuir para programas de inovação e transformação."], "bubble": "No nível referência, o Miltão já virou farol da equipe: inspira, cria métodos e deixa rastro de protagonismo.", "emoji": "👑", "ornament": "★", "burst": ["👑","✨","⭐"]}};
       const $ = (sel, root=document) => root.querySelector(sel);
       const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
       const toast = $('#toast');
