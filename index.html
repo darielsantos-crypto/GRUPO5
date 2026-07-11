@@ -105,6 +105,8 @@
     @keyframes floatHero {0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
     @keyframes floatY {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
     @keyframes spinSlow {to{transform:rotate(360deg)}}
+    @keyframes swipeLeft {0%{opacity:1;transform:translateX(0)}50%{opacity:.3;transform:translateX(-28px)}100%{opacity:1;transform:translateX(0)}}
+    @keyframes swipeRight {0%{opacity:1;transform:translateX(0)}50%{opacity:.3;transform:translateX(28px)}100%{opacity:1;transform:translateX(0)}}
 
     .section-header {position:relative; padding:84px 0 0 100px; margin-bottom:28px}
     .section-title {margin:20px 0 12px; font-size:clamp(3rem,6vw,5rem); line-height:.96; letter-spacing:-.06em; color:var(--navy)}
@@ -235,6 +237,10 @@
       .stage-nav .btn {min-height:52px; font-size:1rem}
       .reaction-bubble {min-height:auto; padding:20px 18px; font-size:1rem}
       .flip-card {min-height:auto; width:100%; transform:none !important; transition:none}
+      .flip-card {touch-action:pan-y; user-select:none; -webkit-user-select:none}
+      .flip-card.swipe-left {animation:swipeLeft .26s ease both}
+      .flip-card.swipe-right {animation:swipeRight .26s ease both}
+      .stage-copy > div:first-child {display:none}
       .card-face {position:relative; inset:auto; min-height:auto; transform:none !important; -webkit-backface-visibility:visible; backface-visibility:visible}
       .card-front, .card-back {display:none}
       .flip-card:not(.is-flipped) .card-front {display:grid}
@@ -309,7 +315,7 @@
           <div class="kicker">Soft Skill Atitudinal</div>
           <h1>Autogestão <br>e <em>Proatividade</em></h1>
           <p class="hero-sub">GRUPO 5</p>
-          <div class="team-inline"><strong>Integrantes:</strong> Ian Oliveira • Jorge Souza • Juliana Barbosa • Paula Oliveira • Rebeca Oliveira • Siluane Rodrigues Webler</div>
+          <div class="team-inline"><strong>Integrantes:</strong> Dariel Silva • Ian Oliveira • Jorge Souza • Juliana Barbosa • Paula Oliveira • Rebeca Oliveira • Siluane Rodrigues Webler</div>
           <div class="hero-meta">
             <div class="meta-card"><b>Disciplina</b><span>Gestão de Desempenho, Produtividade e Carreira</span></div>
             <div class="meta-card"><b>Professor</b><span>Milton Marinho Nogueira Junior</span></div>
@@ -583,7 +589,60 @@
       }
 
       levelTabs.forEach(tab => tab.addEventListener('click', () => selectLevel(tab.dataset.level, {scroll:true})));
-      flipCard.addEventListener('click', flip);
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchMoved = false;
+      let suppressNextClick = false;
+
+      flipCard.addEventListener('touchstart', (event) => {
+        const touch = event.changedTouches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        touchMoved = false;
+      }, {passive:true});
+
+      flipCard.addEventListener('touchmove', (event) => {
+        const touch = event.changedTouches[0];
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+        if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) touchMoved = true;
+      }, {passive:true});
+
+      flipCard.addEventListener('touchend', (event) => {
+        const touch = event.changedTouches[0];
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+        const horizontalSwipe = Math.abs(dx) >= 55 && Math.abs(dx) > Math.abs(dy) * 1.15;
+
+        if (!horizontalSwipe) return;
+
+        suppressNextClick = true;
+        setTimeout(() => { suppressNextClick = false; }, 420);
+
+        if (dx < 0 && currentLevel < 5) {
+          flipCard.classList.add('swipe-left');
+          setTimeout(() => {
+            flipCard.classList.remove('swipe-left');
+            selectLevel(currentLevel + 1);
+          }, 130);
+        } else if (dx > 0 && currentLevel > 1) {
+          flipCard.classList.add('swipe-right');
+          setTimeout(() => {
+            flipCard.classList.remove('swipe-right');
+            selectLevel(currentLevel - 1);
+          }, 130);
+        }
+      }, {passive:true});
+
+      flipCard.addEventListener('click', (event) => {
+        if (suppressNextClick || touchMoved) {
+          event.preventDefault();
+          touchMoved = false;
+          return;
+        }
+        flip();
+      });
       $('#flipButton').addEventListener('click', flip);
       $('#prevLevel').addEventListener('click', () => currentLevel > 1 && selectLevel(currentLevel - 1));
       $('#nextLevel').addEventListener('click', () => currentLevel < 5 && selectLevel(currentLevel + 1));
